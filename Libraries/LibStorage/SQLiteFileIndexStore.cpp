@@ -49,6 +49,37 @@ void LibStorage::SQLiteFileIndexStore::write_to_index(
     check_sqlite_error(rc);
 }
 
+std::shared_ptr<std::vector<LibStorage::IndexFile>> LibStorage::SQLiteFileIndexStore::search(
+    const std::string &keyword) {
+    const std::string query = "SELECT * FROM files WHERE name LIKE ? COLLATE NOCASE";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(_db, query.c_str(), -1, &stmt, nullptr);
+    check_sqlite_error(rc);
+    std::string pattern = "%" + keyword + "%";
+    rc = sqlite3_bind_text(stmt, 1, pattern.c_str(), -1, SQLITE_TRANSIENT);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Cannot bind parameter: " << sqlite3_errmsg(_db) << std::endl;
+        sqlite3_finalize(stmt);
+        return {nullptr};
+    }
+
+    auto results = std::make_shared<std::vector<IndexFile>>();
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+        const unsigned char* path = sqlite3_column_text(stmt, 1);
+        const unsigned char* name = sqlite3_column_text(stmt, 2);
+        int type = sqlite3_column_int(stmt, 3);
+
+        results->emplace_back(std::string(reinterpret_cast<const char*>(path)), std::string(reinterpret_cast<const char*>(name)), static_cast<AK::FileType>(type));
+    }
+
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Execution failed: " << sqlite3_errmsg(_db) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    return results;
+}
+
 void LibStorage::SQLiteFileIndexStore::initialize() {
     char *err_msg = nullptr;
     const auto content = AK::read_file(FILE_TABLE_SQL);

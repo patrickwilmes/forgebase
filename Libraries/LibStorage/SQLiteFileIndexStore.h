@@ -7,6 +7,10 @@
 #pragma once
 #include "FileIndexStore.h"
 #include <sqlite3.h>
+#include <IndexFile.h>
+#include <vector>
+#include <memory>
+#include <string>
 
 namespace LibStorage {
     class SQLiteFileIndexStore final : public FileIndexStore {
@@ -16,6 +20,8 @@ namespace LibStorage {
         ~SQLiteFileIndexStore() override;
 
         void write_to_index(const std::shared_ptr<std::vector<IndexFile> > &files) override;
+
+        std::shared_ptr<std::vector<IndexFile>> search(const std::string & keyword) override;
 
         void initialize() override;
 

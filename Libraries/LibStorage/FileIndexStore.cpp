@@ -17,6 +17,11 @@ void LibStorage::FileIndexStore::write_to_index(
     const std::shared_ptr<std::vector<IndexFile>> &files) {
 }
 
+std::shared_ptr<std::vector<LibStorage::IndexFile>> LibStorage::FileIndexStore::search(
+    const std::string &keyword) {
+    return {nullptr};
+}
+
 std::shared_ptr<LibStorage::FileIndexStore> LibStorage::default_file_index_store() {
     return std::make_shared<SQLiteFileIndexStore>();
 }

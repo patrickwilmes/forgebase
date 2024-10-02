@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <iostream>
 
 void Forgebase::index() {
     const auto obsidian_result = LibObsidian::Obsidian("/home/patrick/second-brain/").get_files_to_index();
@@ -33,4 +34,10 @@ void Forgebase::index() {
 }
 
 void Forgebase::search(const std::string &search) {
+    auto storage = LibStorage::default_file_index_store();
+    const auto results = storage->search(search);
+    for (auto & it : *results) {
+        std::cout << it.get_name() << "\n";
+    }
+    std::cout << std::flush;
 }

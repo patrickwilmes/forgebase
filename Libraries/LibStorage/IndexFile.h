@@ -12,10 +12,14 @@
 namespace LibStorage {
     class IndexFile final {
     public:
-        IndexFile(std::string  path, std::string  name, AK::FileType type);
+        IndexFile(std::string path, std::string name, AK::FileType type);
+
         [[nodiscard]] std::string get_path() const;
+
         [[nodiscard]] std::string get_name() const;
+
         [[nodiscard]] AK::FileType get_type() const;
+
     private:
         std::string _path;
         std::string _name;
