@@ -3,4 +3,7 @@ project(forgebase)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(forgebase main.cpp)
+add_subdirectory(AK)
+add_subdirectory(Forgebase)
+add_subdirectory(Libraries)
+add_subdirectory(Userland)
