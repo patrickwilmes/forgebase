@@ -5,8 +5,13 @@
 * SPDX-License-Identifier: BSD-2-Clause
 */
 #include "Obsidian.h"
-#include <iostream>
+#include <filesystem>
 
-void anotherHiFromObsidian() {
-  std::cout << "Hi From Obsidian" << std::endl;
+namespace fs = std::filesystem;
+
+LibObsidian::Obsidian::Obsidian(const std::string & vault_location): FileIndexer(vault_location) {
+}
+
+std::shared_ptr<std::vector<AK::File> > LibObsidian::Obsidian::get_files_to_index() const {
+    return collect(_location, AK::Markdown);
 }

@@ -8,7 +8,6 @@
 
 #include <string>
 
-namespace Forgebase {
-    void index();
-    void search(const std::string& search);
+namespace AK {
+    std::string read_file(const std::string& path);
 }

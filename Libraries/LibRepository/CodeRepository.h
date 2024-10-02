@@ -6,15 +6,15 @@
 */
 #pragma once
 #include <string>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <File.h>
 #include <FileIndexer.h>
 
-namespace LibObsidian {
-    class Obsidian final : public LibIndexing::FileIndexer {
+namespace LibRepository {
+    class CodeRepository final : public LibIndexing::FileIndexer {
     public:
-        explicit Obsidian(const std::string & vault_location);
+        explicit CodeRepository(const std::string & location);
         [[nodiscard]] std::shared_ptr<std::vector<AK::File>> get_files_to_index() const;
     };
 }

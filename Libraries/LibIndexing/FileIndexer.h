@@ -8,7 +8,10 @@
 
 #include <string>
 
-namespace Forgebase {
-    void index();
-    void search(const std::string& search);
+namespace LibIndexing {
+    class FileIndexer {
+    protected:
+        explicit FileIndexer(const std::string& location);
+        std::string _location;
+    };
 }

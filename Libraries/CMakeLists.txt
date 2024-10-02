@@ -1,1 +1,4 @@
+add_subdirectory(LibStorage)
+add_subdirectory(LibIndexing)
 add_subdirectory(LibObsidian)
+add_subdirectory(LibRepository)
