@@ -3,6 +3,8 @@ set(SOURCES
         File.h
         IO.cpp
         IO.h
+        UserSpace.cpp
+        UserSpace.h
 )
 
 add_library(AK ${SOURCES})
