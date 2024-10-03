@@ -8,11 +8,13 @@
 #include <IO.h>
 #include <string>
 #include <iostream>
+#include <Logging.h>
 
 #define FILE_TABLE_SQL "Resources/DB/file_table.sql"
 #define SQLITE_DB "sqlite.db"
 
 LibStorage::SQLiteFileIndexStore::SQLiteFileIndexStore() {
+    _user_space = std::make_unique<AK::UserSpace>();
     const int rc = sqlite3_open(SQLITE_DB, &_db);
     check_sqlite_error(rc);
 }
@@ -24,6 +26,7 @@ LibStorage::SQLiteFileIndexStore::~SQLiteFileIndexStore() {
 }
 
 void LibStorage::SQLiteFileIndexStore::write_to_index(
+    // TODO - check if table exists beforehand and quit if not
     const std::shared_ptr<std::vector<IndexFile> > &files) {
     const std::string sql = "INSERT OR IGNORE INTO files (path, name, type) VALUES (?, ?, ?)";
     sqlite3_stmt *stmt;
@@ -82,7 +85,9 @@ std::shared_ptr<std::vector<LibStorage::IndexFile>> LibStorage::SQLiteFileIndexS
 
 void LibStorage::SQLiteFileIndexStore::initialize() {
     char *err_msg = nullptr;
-    const auto content = AK::read_file(FILE_TABLE_SQL);
+    std::string sql_file = _user_space->get_config_home() + FILE_TABLE_SQL;
+    AK::debug("Using sql file at " + sql_file + " for db initialization");
+    const auto content = AK::read_file(sql_file);
     if (const int rc = sqlite3_exec(_db, content.c_str(), nullptr, nullptr, &err_msg);
         rc != SQLITE_OK) {
         std::cerr << "SQLite error: " << err_msg << std::endl;
@@ -92,6 +97,6 @@ void LibStorage::SQLiteFileIndexStore::initialize() {
 
 void LibStorage::SQLiteFileIndexStore::check_sqlite_error(const int rc) const {
     if (rc != SQLITE_OK && _db != nullptr) {
-        std::cerr << "SQLite error: " << rc << std::endl;
+        AK::error(sqlite3_errmsg(_db));
     }
 }

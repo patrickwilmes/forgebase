@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <UserSpace.h>
 
 namespace LibStorage {
     class SQLiteFileIndexStore final : public FileIndexStore {
@@ -27,7 +28,7 @@ namespace LibStorage {
 
     private:
         void check_sqlite_error(int rc) const;
-
+        std::unique_ptr<AK::UserSpace> _user_space{};
         sqlite3 *_db{};
     };
 }

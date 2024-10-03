@@ -6,6 +6,21 @@
 */
 #pragma once
 
+#include "Ini.h"
+#include <string>
+#include <memory>
+
 namespace AK {
-    
+    class UserSpace final {
+    public:
+        UserSpace();
+
+        [[nodiscard]] std::string get_property(const std::string& key);
+
+        [[nodiscard]] std::string get_config_home();
+
+    private:
+        std::unique_ptr<IniConfig> _ini_config{};
+        std::string _config_home;
+    };
 }

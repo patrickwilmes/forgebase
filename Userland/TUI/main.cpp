@@ -64,6 +64,7 @@ int main() {
     
     // Main loop to capture user input
     int ch;
+    Core::Forgebase forgebase;
     while ((ch = getch()) != 'q') {
         switch (input_focus) {
             case 0: // Button focus
@@ -76,7 +77,7 @@ int main() {
                 } else if (ch == '\n') {
                     // Handle button press (e.g., Button 1 or Button 2 pressed)
                     if (selected_button == 1) {
-                        Forgebase::index();
+                        forgebase.index();
                     }
                     mvprintw(height - 2, 1, "Button %d pressed", selected_button + 1);
                     refresh();

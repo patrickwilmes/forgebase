@@ -7,8 +7,17 @@
 #pragma once
 
 #include <string>
+#include <UserSpace.h>
 
-namespace Forgebase {
-    void index();
-    void search(const std::string& search);
+namespace Core {
+    class Forgebase final {
+    public:
+        Forgebase();
+
+        void index();
+
+        void search(const std::string& search);
+    private:
+        AK::UserSpace _user_space;
+    };
 }
