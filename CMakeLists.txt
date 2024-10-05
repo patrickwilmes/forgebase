@@ -3,6 +3,7 @@ project(forgebase)
 
 set(CMAKE_CXX_STANDARD 20)
 
+add_subdirectory(ThirdParty/libpqxx)
 add_subdirectory(AK)
 add_subdirectory(Libraries)
 add_subdirectory(Forgebase)

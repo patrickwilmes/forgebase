@@ -7,6 +7,7 @@
 #include "FileIndexStore.h"
 
 #include "SQLiteFileIndexStore.h"
+#include "PostgresqlFileIndexStore.h"
 
 LibStorage::FileIndexStore::~FileIndexStore() = default;
 
@@ -23,5 +24,5 @@ std::shared_ptr<std::vector<LibStorage::IndexFile>> LibStorage::FileIndexStore::
 }
 
 std::shared_ptr<LibStorage::FileIndexStore> LibStorage::default_file_index_store() {
-    return std::make_shared<SQLiteFileIndexStore>();
+    return std::make_shared<PostgresqlFileIndexStore>();
 }
